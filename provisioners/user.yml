@@ -1,0 +1,12 @@
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: create jspengeman group
+      group:
+        name: jspengeman
+    - name: create jspengeman user
+      user:
+        name: jspengeman
+        groups: jspengeman, wheel
+        password: $6$xyz$tnMSATh.wYtjc/IgrlCB7rM35TOaiZqx8Tj8j99n1kFCKE9INV73DCLL4gqiB006APbOR6ydhh8swGiwPLAgo0

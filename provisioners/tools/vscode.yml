@@ -1,0 +1,17 @@
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: import vscode repo key
+      shell:
+        cmd:  rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    - name: create vscode repo entry
+      shell:
+        cmd: sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+    - name: install vscode
+      dnf:
+        name: code
+        state: present
+    - name: install darcula theme
+      shell:
+        cmd: code --user-data-dir /home/jspengem/.vscode --install-extension dracula-theme.theme-dracula 

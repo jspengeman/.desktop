@@ -1,0 +1,23 @@
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: install dnf plugins
+      dnf:
+        name: dnf-plugins-core
+        state: present
+    - name: add the docker dnf repo
+      shell:
+        cmd: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    - name: install docker packages
+      dnf:
+        name:
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io
+    - name: enable backwards compatibility for cgroups (TODO)
+      shell:
+        cmd: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+    - name: enable docker service
+      shell:
+        cmd: systemctl enable docker

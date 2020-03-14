@@ -1,0 +1,24 @@
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+  - name: install the kde desktop package group
+    dnf:
+      name: '@kde-desktop-environment'
+      state: present
+  - name: install materia theme
+    shell:
+      cmd: wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/materia-kde/master/install.sh | sh
+  - name: apply materia theme
+    shell:
+      cmd: lookandfeeltool -a 'com.github.varlesh.materia'
+  - name: set graphical target
+    shell:
+      cmd: systemctl isolate graphical.target
+  - name: set graphical target to default
+    shell:
+      cmd: systemctl set-default graphical.target
+  - name: install firefox
+    dnf: 
+      name: firefox
+      state: present
